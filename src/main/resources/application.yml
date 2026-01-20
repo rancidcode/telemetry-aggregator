@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: telemetry-aggregator
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  config:
+    import: optional:file:.env[.properties]
+
+
+server:
+  port: 8081
+
+kafka:
+  topic:
+    raw: ${KAFKA_TOPIC_RAW}
+    dlq: ${KAFKA_TOPIC_DLQ}
+  group:
+    raw: ${KAFKA_GROUP_RAW}
+    dlq: ${KAFKA_GROUP_DLQ}
+
+logging:
+  level:
+    org.apache.kafka: OFF
