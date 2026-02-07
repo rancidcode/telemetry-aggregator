@@ -14,10 +14,4 @@ public class KafkaConsumerService {
     public void rawProcess(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         log.info("Topic : {}, message : {}", topic, message);
     }
-
-    @KafkaListener(topics = "${kafka.topic.dlq}", groupId = "${kafka.group.dlq}")
-    public void dlqProcess(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
-        log.info("Topic : {}, message : {}", topic, message);
-    }
-
 }

@@ -16,10 +16,8 @@ server:
 kafka:
   topic:
     raw: ${KAFKA_TOPIC_RAW}
-    dlq: ${KAFKA_TOPIC_DLQ}
   group:
     raw: ${KAFKA_GROUP_RAW}
-    dlq: ${KAFKA_GROUP_DLQ}
 
 logging:
   level:

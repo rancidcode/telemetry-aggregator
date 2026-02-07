@@ -1,11 +1,13 @@
 package org.rancidcode.telemetryaggregator.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.WindowStore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.support.serializer.JacksonJsonSerde;
@@ -13,21 +15,25 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.time.Duration;
 
+@Slf4j
 @Configuration
 public class TopologyConfig {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    @Value(value = "${kafka.topic.raw}")
+    private String rawTopic;
+
     @Bean
     public KStream<String, String> stream(StreamsBuilder builder) {
 
-        KStream<String, String> input = builder.stream("telemetry.raw", Consumed.with(Serdes.String(), Serdes.String()));
+        KStream<String, String> input = builder.stream(rawTopic, Consumed.with(Serdes.String(), Serdes.String()));
 
         KGroupedStream<String, String> grouped = input.selectKey((key, value) -> key != null ? key : "default-key")
                 .groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
 
         aggregateAvg(grouped, 1);
-        //aggregate(grouped, 5);
+        aggregateAvg(grouped, 2);
 
         return input;
     }
