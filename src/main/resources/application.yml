@@ -17,7 +17,7 @@ kafka:
   topic:
     raw: ${KAFKA_TOPIC_RAW}
   group:
-    raw: ${KAFKA_GROUP_RAW}
+    raw-logger: ${KAFKA_GROUP_RAW_LOGGER}
 
 logging:
   level:

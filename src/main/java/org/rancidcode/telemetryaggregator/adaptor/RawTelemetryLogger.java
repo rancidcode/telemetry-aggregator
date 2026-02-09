@@ -1,4 +1,4 @@
-package org.rancidcode.telemetryaggregator.service.kafka;
+package org.rancidcode.telemetryaggregator.adaptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class KafkaConsumerService {
+public class RawTelemetryLogger {
 
-    @KafkaListener(topics = "${kafka.topic.raw}", groupId = "${kafka.group.raw}")
+    @KafkaListener(topics = "${kafka.topic.raw}", groupId = "${kafka.group.raw-logger}")
     public void rawProcess(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         log.info("Topic : {}, message : {}", topic, message);
     }

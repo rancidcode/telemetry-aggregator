@@ -1,9 +1,11 @@
-package org.rancidcode.telemetryaggregator.config;
+package org.rancidcode.telemetryaggregator.domain;
 
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AvgStats {
+
+    private final ObjectMapper MAPPER = new ObjectMapper();
 
     private int count;
     private double sumTemperature;
@@ -11,9 +13,6 @@ public class AvgStats {
     private double sumHeatIndex;
     private String startTime;
     private String endTime;
-
-    public AvgStats() {
-    }
 
     private void add(double temperature, double humidity, double heatIndex, String timeStamp) {
 
@@ -71,7 +70,7 @@ public class AvgStats {
 
     public void parseJSON(String json) {
         try {
-            JsonNode root = new ObjectMapper().readTree(json);
+            JsonNode root = MAPPER.readTree(json);
             JsonNode nodeTemperature = root.get("temperature");
             JsonNode nodeHumidity = root.get("humidity");
             JsonNode nodeHeatIndex = root.get("heatIndex");
